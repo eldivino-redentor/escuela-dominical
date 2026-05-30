@@ -70,10 +70,12 @@ export default function MiClase() {
     setSaved(false)
   }
 
-  async function handleSave() {
+ async function handleSave() {
     if (!semana || !claseId) return
     setSaving(true)
     setError('')
+
+    const { data: { user } } = await supabase.auth.getUser()
 
     const rows = miembros.map(m => ({
       semana_id: semana.id,
@@ -82,7 +84,7 @@ export default function MiClase() {
       presente: registros[m.id]?.presente ?? false,
       capitulos_leidos: parseInt(registros[m.id]?.capitulos_leidos ?? 0) || 0,
       peso_misionero: parseFloat(registros[m.id]?.peso_misionero ?? 0) || 0,
-      registrado_por: (await supabase.auth.getUser()).data.user?.id,
+      registrado_por: user?.id,
       updated_at: new Date().toISOString()
     }))
 
