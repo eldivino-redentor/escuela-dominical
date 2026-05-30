@@ -28,7 +28,7 @@ export default function App() {
         <Route index element={<Dashboard />} />
         <Route path="mi-clase" element={<MiClase />} />
         <Route path="reporte" element={<ProtectedRoute adminOnly><ReporteDominical /></ProtectedRoute>} />
-        <Route path="miembros" element={<ProtectedRoute adminOnly><Miembros /></ProtectedRoute>} />
+        <Route path="miembros" element={<ProtectedRoute><Miembros /></ProtectedRoute>} />
         <Route path="estadisticas" element={<Estadisticas />} />
         <Route path="configuracion" element={<ProtectedRoute adminOnly><Configuracion /></ProtectedRoute>} />
       </Route>
