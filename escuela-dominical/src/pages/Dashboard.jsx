@@ -12,9 +12,8 @@ export default function Dashboard() {
 
   useEffect(() => { loadData() }, [perfil])
 
-  async function loadData() {
-    if (!perfil) return
-    setLoading(true)
+async function loadData() {
+    if (!perfil) { setLoading(false); return }
 
     // Obtener semana activa del periodo activo
     const { data: periodo } = await supabase.from('periodos').select('id,nombre').eq('activo', true).single()
