@@ -39,19 +39,17 @@ export default function Layout() {
           <NavLink to="/mi-clase" className={({ isActive }) => isActive ? navActive : navInactive}>
             <ClassIcon /> Mi Clase
           </NavLink>
-          {isAdmin && (
-            <NavLink to="/reporte" className={({ isActive }) => isActive ? navActive : navInactive}>
-              <ReportIcon /> Reporte Dominical
-            </NavLink>
-          )}
+          <NavLink to="/miembros" className={({ isActive }) => isActive ? navActive : navInactive}>
+            <UsersIcon /> Miembros
+          </NavLink>
           <NavLink to="/estadisticas" className={({ isActive }) => isActive ? navActive : navInactive}>
             <ChartIcon /> Estadísticas
           </NavLink>
           {isAdmin && (
             <>
-              <NavLink to="/miembros" className={({ isActive }) => isActive ? navActive : navInactive}>
-  <UsersIcon /> Miembros
-</NavLink>
+              <NavLink to="/reporte" className={({ isActive }) => isActive ? navActive : navInactive}>
+                <ReportIcon /> Reporte Dominical
+              </NavLink>
               <NavLink to="/configuracion" className={({ isActive }) => isActive ? navActive : navInactive}>
                 <CogIcon /> Configuración
               </NavLink>
@@ -97,11 +95,9 @@ export default function Layout() {
           <NavLink to="/mi-clase" className={({ isActive }) => `flex-1 flex flex-col items-center py-2 text-xs gap-1 ${isActive ? 'text-blue-700' : 'text-gray-500'}`}>
             <ClassIcon /><span>Mi Clase</span>
           </NavLink>
-          {isAdmin && (
-            <NavLink to="/reporte" className={({ isActive }) => `flex-1 flex flex-col items-center py-2 text-xs gap-1 ${isActive ? 'text-blue-700' : 'text-gray-500'}`}>
-              <ReportIcon /><span>Reporte</span>
-            </NavLink>
-          )}
+          <NavLink to="/miembros" className={({ isActive }) => `flex-1 flex flex-col items-center py-2 text-xs gap-1 ${isActive ? 'text-blue-700' : 'text-gray-500'}`}>
+            <UsersIcon /><span>Miembros</span>
+          </NavLink>
           <NavLink to="/estadisticas" className={({ isActive }) => `flex-1 flex flex-col items-center py-2 text-xs gap-1 ${isActive ? 'text-blue-700' : 'text-gray-500'}`}>
             <ChartIcon /><span>Stats</span>
           </NavLink>
