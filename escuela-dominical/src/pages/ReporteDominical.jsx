@@ -28,17 +28,18 @@ export default function ReporteDominical() {
     setLoading(false)
   }
 
-  const totalAsistencia   = clases.reduce((s, c) => s + Number(c.total_asistencia), 0)
-  const totalCapitulos    = clases.reduce((s, c) => s + Number(c.total_capitulos), 0)
-  const totalCooperacion  = clases.reduce((s, c) => s + Number(c.total_cooperacion), 0)
+  const totalAsistencia  = clases.reduce((s, c) => s + Number(c.total_asistencia), 0)
+  const totalCapitulos   = clases.reduce((s, c) => s + Number(c.total_capitulos), 0)
+  const totalCooperacion = clases.reduce((s, c) => s + Number(c.total_cooperacion), 0)
+  const totalMisionero   = clases.reduce((s, c) => s + Number(c.total_peso_misionero), 0)
 
   const semanaSeleccionada = semanas.find(s => s.id === semanaId)
 
   function exportCSV() {
     const rows = [
-      ['Clase', 'Asistencia', 'Capítulos leídos', 'Peso Misionero'],
-      ...clases.map(c => [c.clase, c.total_asistencia, c.total_capitulos, c.total_cooperacion]),
-      ['TOTAL', totalAsistencia, totalCapitulos, totalCooperacion.toFixed(2)]
+      ['Clase', 'Asistencia', 'Capítulos', 'Cooperación', 'Peso Misionero'],
+      ...clases.map(c => [c.clase, c.total_asistencia, c.total_capitulos, c.total_cooperacion, c.total_peso_misionero]),
+      ['TOTAL', totalAsistencia, totalCapitulos, totalCooperacion.toFixed(2), totalMisionero.toFixed(2)]
     ]
     const csv = rows.map(r => r.join(',')).join('\n')
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
@@ -49,7 +50,7 @@ export default function ReporteDominical() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-xl font-bold text-gray-900">Reporte Dominical</h1>
         <button onClick={exportCSV} className="btn-secondary text-sm px-3 py-1.5">
@@ -57,7 +58,6 @@ export default function ReporteDominical() {
         </button>
       </div>
 
-      {/* Selector de semana */}
       <div className="card mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-1">Clase / Semana</label>
         <select className="input" value={semanaId || ''} onChange={e => setSemanaId(Number(e.target.value))}>
@@ -75,18 +75,22 @@ export default function ReporteDominical() {
       ) : (
         <>
           {/* Totales generales */}
-          <div className="grid grid-cols-3 gap-3 mb-4">
+          <div className="grid grid-cols-2 gap-3 mb-4 sm:grid-cols-4">
             <div className="card text-center">
               <div className="text-2xl font-bold text-blue-700">{totalAsistencia}</div>
-              <div className="text-xs text-gray-500 mt-1">Total Asistencia</div>
+              <div className="text-xs text-gray-500 mt-1">👥 Asistencia</div>
             </div>
             <div className="card text-center">
               <div className="text-2xl font-bold text-green-700">{totalCapitulos}</div>
-              <div className="text-xs text-gray-500 mt-1">Total Capítulos</div>
+              <div className="text-xs text-gray-500 mt-1">📖 Capítulos</div>
             </div>
             <div className="card text-center">
-              <div className="text-2xl font-bold text-yellow-600">${totalCooperacion.toFixed(2)}</div>
-              <div className="text-xs text-gray-500 mt-1">Peso Misionero</div>
+              <div className="text-2xl font-bold text-blue-600">${totalCooperacion.toFixed(2)}</div>
+              <div className="text-xs text-gray-500 mt-1">🤝 Cooperación</div>
+            </div>
+            <div className="card text-center">
+              <div className="text-2xl font-bold text-yellow-600">${totalMisionero.toFixed(2)}</div>
+              <div className="text-xs text-gray-500 mt-1">💰 Peso Misionero</div>
             </div>
           </div>
 
@@ -98,19 +102,21 @@ export default function ReporteDominical() {
                   <th className="text-left px-4 py-3 text-gray-600 font-semibold">Clase</th>
                   <th className="text-center px-4 py-3 text-gray-600 font-semibold">👥 Asist.</th>
                   <th className="text-center px-4 py-3 text-gray-600 font-semibold">📖 Cap.</th>
+                  <th className="text-right px-4 py-3 text-gray-600 font-semibold">🤝 Coop.</th>
                   <th className="text-right px-4 py-3 text-gray-600 font-semibold">💰 Peso Mis.</th>
                 </tr>
               </thead>
               <tbody>
                 {clases.length === 0 && (
-                  <tr><td colSpan={4} className="text-center py-8 text-gray-400">Sin registros para esta semana</td></tr>
+                  <tr><td colSpan={5} className="text-center py-8 text-gray-400">Sin registros para esta semana</td></tr>
                 )}
                 {clases.map((c, i) => (
                   <tr key={c.clase_id} className={i % 2 === 0 ? 'bg-gray-50' : ''}>
                     <td className="px-4 py-3 font-medium text-gray-800">{c.clase}</td>
                     <td className="px-4 py-3 text-center text-blue-700 font-semibold">{c.total_asistencia}</td>
                     <td className="px-4 py-3 text-center text-green-700">{c.total_capitulos}</td>
-                    <td className="px-4 py-3 text-right text-yellow-600 font-medium">${Number(c.total_cooperacion).toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right text-blue-600 font-medium">${Number(c.total_cooperacion).toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right text-yellow-600 font-medium">${Number(c.total_peso_misionero).toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -120,7 +126,8 @@ export default function ReporteDominical() {
                     <td className="px-4 py-3 font-bold text-blue-900">TOTAL</td>
                     <td className="px-4 py-3 text-center font-bold text-blue-900">{totalAsistencia}</td>
                     <td className="px-4 py-3 text-center font-bold text-green-800">{totalCapitulos}</td>
-                    <td className="px-4 py-3 text-right font-bold text-yellow-700">${totalCooperacion.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right font-bold text-blue-700">${totalCooperacion.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right font-bold text-yellow-700">${totalMisionero.toFixed(2)}</td>
                   </tr>
                 </tfoot>
               )}
