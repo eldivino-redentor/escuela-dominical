@@ -84,6 +84,7 @@ export default function MiClase() {
       presente: registros[m.id]?.presente ?? false,
       capitulos_leidos: parseInt(registros[m.id]?.capitulos_leidos ?? 0) || 0,
       peso_misionero: parseFloat(registros[m.id]?.peso_misionero ?? 0) || 0,
+      cooperacion: parseFloat(registros[m.id]?.cooperacion ?? 0) || 0,
       registrado_por: user?.id,
       updated_at: new Date().toISOString()
     }))
@@ -163,26 +164,27 @@ export default function MiClase() {
                       {m.nombre_completo}
                     </span>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 ml-10">
+                  <div className="grid grid-cols-3 gap-2 ml-10">
                     <div>
-                      <label className="text-xs text-gray-500 block mb-1">📖 Capítulos leídos</label>
-                      <input
-                        type="number" min="0" max="200"
+                      <label className="text-xs text-gray-500 block mb-1">📖 Capítulos</label>
+                      <input type="number" min="0" max="200"
                         value={reg.capitulos_leidos ?? ''}
                         onChange={e => updateField(m.id, 'capitulos_leidos', e.target.value)}
-                        placeholder="0"
-                        className="input text-sm py-1.5"
-                      />
+                        placeholder="0" className="input text-sm py-1.5" />
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-500 block mb-1">🤝 Cooperación</label>
+                      <input type="number" min="0" step="1"
+                        value={reg.cooperacion ?? ''}
+                        onChange={e => updateField(m.id, 'cooperacion', e.target.value)}
+                        placeholder="0.00" className="input text-sm py-1.5" />
                     </div>
                     <div>
                       <label className="text-xs text-gray-500 block mb-1">💰 Peso Misionero</label>
-                      <input
-                        type="number" min="0" step="1"
+                      <input type="number" min="0" step="1"
                         value={reg.peso_misionero ?? ''}
                         onChange={e => updateField(m.id, 'peso_misionero', e.target.value)}
-                        placeholder="0.00"
-                        className="input text-sm py-1.5"
-                      />
+                        placeholder="0.00" className="input text-sm py-1.5" />
                     </div>
                   </div>
                 </div>
