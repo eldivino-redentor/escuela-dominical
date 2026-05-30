@@ -17,6 +17,7 @@ export default function Configuracion() {
   const [nuRol, setNuRol]       = useState('maestro')
   const [clases, setClases]     = useState([])
   const [msg, setMsg]           = useState('')
+  const [nuevaFecha, setNuevaFecha] = useState(new Date().toISOString().split('T')[0])
   // Nuevo periodo
   const [npNombre, setNpNombre]   = useState('')
   const [npFecha, setNpFecha]     = useState('')
@@ -48,7 +49,8 @@ export default function Configuracion() {
     setLoading(false)
   }
 
-  async function abrirClase() {
+async function abrirClase() {
+    if (!nuevaFecha) { setMsg('Selecciona la fecha del domingo.'); return }
     setSaving(true); setMsg('')
     const periodo = periodos.find(p => p.id === periodoId)
     if (!periodo) { setSaving(false); return }
@@ -57,11 +59,11 @@ export default function Configuracion() {
     const { error } = await supabase.from('semanas').insert({
       periodo_id: periodoId,
       numero_semana: num,
-      fecha_domingo: new Date().toISOString().split('T')[0],
+      fecha_domingo: nuevaFecha,
       cerrada: false
     })
     if (error) setMsg('Error: ' + error.message)
-    else { setMsg(`Clase ${num} abierta correctamente.`); await loadSemanas() }
+    else { setMsg(`Clase ${num} abierta para el ${nuevaFecha}.`); await loadSemanas() }
     setSaving(false)
   }
 
@@ -127,10 +129,18 @@ export default function Configuracion() {
 
           <div className="flex items-center justify-between mb-3">
             <p className="text-sm text-gray-600">{semanas.length} de 26 clases registradas</p>
-            <button onClick={abrirClase} disabled={saving || semanas.length >= 26}
-              className="btn-primary text-sm">
-              + Abrir clase {semanas.length + 1}
-            </button>
+           <div className="flex items-center gap-2">
+  <input
+    type="date"
+    value={nuevaFecha}
+    onChange={e => setNuevaFecha(e.target.value)}
+    className="input text-sm py-1.5 w-40"
+  />
+  <button onClick={abrirClase} disabled={saving || semanas.length >= 26}
+    className="btn-primary text-sm">
+    + Abrir clase {semanas.length + 1}
+  </button>
+</div>
           </div>
 
           <div className="space-y-2">
