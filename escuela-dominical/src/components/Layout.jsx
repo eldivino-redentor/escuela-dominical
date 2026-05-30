@@ -50,8 +50,8 @@ export default function Layout() {
           {isAdmin && (
             <>
               <NavLink to="/miembros" className={({ isActive }) => isActive ? navActive : navInactive}>
-                <UsersIcon /> Miembros
-              </NavLink>
+  <UsersIcon /> Miembros
+</NavLink>
               <NavLink to="/configuracion" className={({ isActive }) => isActive ? navActive : navInactive}>
                 <CogIcon /> Configuración
               </NavLink>
