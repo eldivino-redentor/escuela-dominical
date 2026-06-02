@@ -8,6 +8,7 @@ import ReporteDominical from './pages/ReporteDominical'
 import Miembros from './pages/Miembros'
 import Estadisticas from './pages/Estadisticas'
 import Configuracion from './pages/Configuracion'
+import ReporteClase from './pages/ReporteClase'
 
 function ProtectedRoute({ children, adminOnly = false }) {
   const { user, perfil, loading, isAdmin } = useAuth()
@@ -31,6 +32,7 @@ export default function App() {
         <Route path="miembros" element={<ProtectedRoute><Miembros /></ProtectedRoute>} />
         <Route path="estadisticas" element={<Estadisticas />} />
         <Route path="configuracion" element={<ProtectedRoute adminOnly><Configuracion /></ProtectedRoute>} />
+        <Route path="reporte-clase" element={<ProtectedRoute><ReporteClase /></ProtectedRoute>} />
       </Route>
     </Routes>
   )
